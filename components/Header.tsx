@@ -8,10 +8,7 @@ const Header: React.FC = () => {
   const isActive: (pathname: string) => boolean = (pathname) =>
     router.pathname === pathname;
 
-  const { data: session, status } = useSession();
-
-  console.log('status ===> ', status)
-  console.log('session ===> ', session)
+  const sessionObj = useSession();
 
   let left = (
     <div className="left">
@@ -44,7 +41,7 @@ const Header: React.FC = () => {
 
   let right = null;
 
-  if (status === 'loading') {
+  if (sessionObj.status === 'loading') {
     left = (
       <div className="left">
         <Link href="/">
@@ -85,7 +82,7 @@ const Header: React.FC = () => {
     );
   }
 
-  if (!session) {
+  if (!sessionObj.data) {
     right = (
       <div className="right">
         <Link href="/api/auth/signin">
@@ -116,7 +113,7 @@ const Header: React.FC = () => {
     );
   }
 
-  if (session) {
+  if (sessionObj.data) {
     left = (
       <div className="left">
         <Link href="/">
@@ -151,7 +148,7 @@ const Header: React.FC = () => {
     right = (
       <div className="right">
         <p>
-          {session.user.name} ({session.user.email})
+          {sessionObj.data.user.name} ({sessionObj.data.user.email})
         </p>
         <Link href="/create">
           <button>
